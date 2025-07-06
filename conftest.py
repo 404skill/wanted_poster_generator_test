@@ -14,8 +14,7 @@ def base_url():
     Base URL for the API under test
     Default to localhost:8000, can be overridden via environment variable
     """
-    import os
-    return os.getenv("API_BASE_URL", "http://localhost:8000")
+    return "http://app:8000"
 
 
 @pytest.fixture(scope="session")
