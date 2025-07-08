@@ -299,6 +299,8 @@ class TestTask4ImageDownload:
             f"Non-existent image should return 404 Not Found but got {response.status_code}. "
             f"Response: {response.text}"
         )
+        json_data = response.json()
+        assert 'error' in json_data, f"Error response should contain 'error' field but got {json_data}"
 
     def test_unprocessed_image_returns_404_not_found(self, base_url, uploaded_image_id):
         """Test that unprocessed images return 404 Not Found"""

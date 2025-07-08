@@ -34,7 +34,7 @@ def uploaded_image_id(base_url):
     response = requests.post(f"{base_url}/images", files=files)
     
     if response.status_code != 201:
-        pytest.skip(f"Could not upload test image for fixture: {response.text}")
+        pytest.fail(f"Could not upload test image for fixture: {response.text}")
     
     return response.json()['id']
 
@@ -51,7 +51,7 @@ def processing_image_id(base_url, uploaded_image_id):
     if response.status_code in [200, 409]:  # 409 if already processing
         return uploaded_image_id
     else:
-        pytest.skip(f"Could not trigger processing for fixture: {response.text}")
+        pytest.fail(f"Could not trigger processing for fixture: {response.text}")
 
 
 @pytest.fixture(scope="session")
@@ -80,7 +80,7 @@ def completed_image_id(base_url):
     upload_response = requests.post(f"{base_url}/images", files=files)
     
     if upload_response.status_code != 201:
-        pytest.skip(f"Could not upload image for completed fixture: {upload_response.text}")
+        pytest.fail(f"Could not upload image for completed fixture: {upload_response.text}")
     
     image_id = upload_response.json()['id']
     
@@ -88,7 +88,7 @@ def completed_image_id(base_url):
     process_response = requests.post(f"{base_url}/images/{image_id}/process")
     
     if process_response.status_code not in [200, 409]:
-        pytest.skip(f"Could not trigger processing for completed fixture: {process_response.text}")
+        pytest.fail(f"Could not trigger processing for completed fixture: {process_response.text}")
     
     # Wait a bit for processing (this is a simplified approach)
     import time
@@ -113,4 +113,4 @@ def failed_image_id(base_url):
     
     # If no failed image exists, we'll skip tests that need it
     # In a real scenario, you might create a corrupted image or simulate failure
-    pytest.skip("No failed images available for testing") 
+    pytest.fail("No failed images available for testing") 
